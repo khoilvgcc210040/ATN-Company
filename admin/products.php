@@ -25,6 +25,8 @@ if(isset($_POST['add_product'])){
    $category_id = filter_var($category_id, FILTER_SANITIZE_STRING);
    $supplier_id = $_POST['supplier_id'];
    $supplier_id = filter_var($supplier_id, FILTER_SANITIZE_STRING);
+   $date = $_POST['date'];
+   $date = filter_var($date, FILTER_SANITIZE_STRING);
 
    $image_01 = $_FILES['image_01']['name'];
    $image_01 = filter_var($image_01, FILTER_SANITIZE_STRING);
@@ -51,10 +53,9 @@ if(isset($_POST['add_product'])){
       $message[] = 'product name already exist!';
    }else{
 
-      $insert_products = $conn->prepare("INSERT INTO `products`(pname, details, price, image_01, image_02, image_03,store_id,category_id,supplier_id) 
-      VALUES(?,?,?,?,?,?,?,?,?)");
-      $insert_products->execute([$pname, $details, $price, $image_01, $image_02, $image_03, $store_id, $category_id, $supplier_id]);
-
+      $insert_products = $conn->prepare("INSERT INTO `products`(pname, details, price, image_01, image_02, image_03,store_id,category_id,supplier_id,date) 
+      VALUES(?,?,?,?,?,?,?,?,?,?)");
+      $insert_products->execute([$pname, $details, $price, $image_01, $image_02, $image_03, $store_id, $category_id, $supplier_id, $date]);
       if($insert_products){
          if($image_size_01 > 2000000 OR $image_size_02 > 2000000 OR $image_size_03 > 2000000){
             $message[] = 'image size is too large!';
@@ -138,6 +139,10 @@ if(isset($_GET['delete'])){
          <div class="inputBox">
             <span style="color: blue;">Product details (required):</span>
             <textarea name="details" placeholder="enter product details" class="box" required maxlength="500" cols="30" rows="10"></textarea>
+         </div>
+         <div class="inputBox">
+            <span style="color: blue;">Date:</span>
+            <input type="date" name="date" accept="image/jpg, image/jpeg, image/png, image/webp" class="box" required>
          </div>
          <div class="inputBox">
             <span style="color: blue;">Stored ID (required):</span>
